@@ -23,9 +23,14 @@ function App() {
       Back to the beginning
     </button>
     
-   {/* You'll also want to add a value prop to make it a controlled component — meaning React's state is the source of truth for what's in the field:
-//tsx<input value={preamble} onChange={(e) => setPreamble(e.target.value)}></input>
-//Without value={preamble} the input manages its own state internally and React doesn't fully control it. With it, the input always displays whatever is in state, and every keystroke updates state, which updates the input. It's a loop but a deliberate one.
+   {/* The following from Claude:
+   You'll also want to add a value prop to make it a controlled component — meaning React's 
+   state is the source of truth for what's in the field:
+   <input value={preamble} onChange={(e) => setPreamble(e.target.value)}></input>
+  Without value={preamble} the input manages its own state internally and React 
+  doesn't fully control it. With it, the input always displays whatever is in state, 
+  and every keystroke updates state, which updates the input. 
+  It's a loop but a deliberate one.
 */}
     <form>
 <input value={preamble} onChange={(e) => setPreamble(e.target.value)}></input>    </form>
