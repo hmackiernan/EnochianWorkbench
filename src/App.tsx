@@ -1,39 +1,16 @@
-import { useState } from 'react'
+/* import { useState } from 'react' */
 
-const greeting: String = "o";
-
+import TabletGrid from './TabletGrid'
 
 function App() {
-    const [count, setCount] = useState(0)
-    const [preamble,setPreamble] = useState("Hello")
-    const repeatedGreeting: String = greeting.repeat(count);
+const mockLetters = Array.from({ length: 12 }, (_, r) =>
+  Array.from({ length: 13 }, (_, c) => String.fromCharCode(65 + (r * 13 + c) % 26))
+)
+
   return (
     <div>
-      <h1>  {preamble}{repeatedGreeting}  World</h1>
-
-      <button onClick={() => setCount(count + 1)}>
-      Clicked {count} times
-    </button>
-    <br></br>
-    <button onClick={() => setCount(count > 0 ? count - 1 : 0)}>
-      Lose an o {count}
-    </button>
-<br></br>
-    <button onClick={() => setCount( 0)}>
-      Back to the beginning
-    </button>
-    
-   {/* The following from Claude:
-   You'll also want to add a value prop to make it a controlled component — meaning React's 
-   state is the source of truth for what's in the field:
-   <input value={preamble} onChange={(e) => setPreamble(e.target.value)}></input>
-  Without value={preamble} the input manages its own state internally and React 
-  doesn't fully control it. With it, the input always displays whatever is in state, 
-  and every keystroke updates state, which updates the input. 
-  It's a loop but a deliberate one.
-*/}
-    <form>
-<input value={preamble} onChange={(e) => setPreamble(e.target.value)}></input>    </form>
+      <h1> Enochian Workbench</h1>
+      <TabletGrid letters={mockLetters} />
     </div>
   )
 }
