@@ -25,13 +25,10 @@ function TabletGrid({letters}: { letters: string[][]}) {
   return (
         <div>
       {letters.map((row, r) => (
-        <div key={r} style={{ display: 'flex' }}>
+        <div key={r} className="tablet-row">
 
           {row.map((letter, c) => (
-<div key={`${r}-${c}`} onClick={() => handleCellClick(r, c)} style={{ 
-  border: '1px solid white',
-  backgroundColor: selected.has(`${r}-${c}`) ? 'yellow' : 'transparent'
-}}>
+<div key={`${r}-${c}`} onClick={() => handleCellClick(r, c)} className={selected.has(`${r}-${c}`) ? "tablet-cell tablet-cell-selected" : "tablet-cell"}>
  {letter}
             </div>
           ))}

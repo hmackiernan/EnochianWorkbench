@@ -1,5 +1,5 @@
 # Enochian Workbench — Session Handoff
-_Generated 2026-06-23_
+_Updated 2026-06-28_
 
 ## Project Overview
 
@@ -24,14 +24,24 @@ A reference/annotation tool for the Enochian magical system of John Dee and Edwa
 - Renders rows as flexbox `<div>` rows, cells as individual `<div>`s
 - Tracks selected cells in `useState<Set<string>>` — keys are `"row-col"` strings (e.g. `"0-3"`)
 - Click handler toggles membership in the Set using the functional updater pattern (`setSelected(prev => ...)`) — important because Set mutations need a new reference to trigger a re-render
-- Selected cells render with `backgroundColor: 'yellow'`; unselected are transparent
-- Border: `1px solid white` on each cell
+- Selected cells get class `tablet-cell tablet-cell-selected`; unselected just `tablet-cell`
+- className is a conditional expression: `selected.has(`${r}-${c}`) ? "tablet-cell tablet-cell-selected" : "tablet-cell"`
+
+### `src/App.css`
+- Styles live here (imported in App.tsx)
+- `.tablet-row` — `display: flex` (makes cells go horizontal)
+- `.tablet-cell` — `width: 2rem; height: 2rem; border: 1px solid white`
+- `.tablet-cell-selected` — `background-color: yellow`
 
 ### Key things learned getting here
 - JSX uses camelCase event handlers (`onClick` not `onclick`)
 - Controlled components: `value={state}` + `onChange` handler
 - Why you can't mutate a Set in place and call setState — React does a reference check, so you must create a new Set
 - `Array.from({ length: N }, (_, i) => ...)` pattern for generating arrays
+- CSS is global regardless of which TSX file imports it — no true component scoping without CSS Modules
+- Inline styles in JSX (`style={{ ... }}`) can be conditional; CSS classes can't read state, so conditionality is handled by toggling class names instead
+- Vite's hot reload is unreliable — sometimes needs a manual browser refresh or full server restart
+- `import './App.css'` must be in App.tsx or the styles won't load (learned by forgetting it)
 
 ## What's NOT done yet (near-term)
 - Proper Enochian letter data (real tablet contents, not mock A–Z)

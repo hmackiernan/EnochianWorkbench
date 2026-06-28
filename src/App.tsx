@@ -1,5 +1,5 @@
 /* import { useState } from 'react' */
-
+import './App.css'
 import TabletGrid from './TabletGrid'
 
 function App() {
