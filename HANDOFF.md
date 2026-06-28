@@ -43,7 +43,10 @@ A reference/annotation tool for the Enochian magical system of John Dee and Edwa
 - Inline styles in JSX (`style={{ ... }}`) can be conditional; CSS classes can't read state, so conditionality is handled by toggling class names instead
 - Lifting state: move useState up to a common ancestor so siblings can share it; pass value and handler back down as props
 - Props are one destructured object, not multiple arguments: `function Foo({ a, b, c }: { a: string, b: number, c: () => void })`
+- The inline type annotation (`{ a: string, ... }`) is TypeScript only — plain JS doesn't have types
 - State flows down via props; events flow back up via callback props (e.g. `onCellClick`)
+- Prop names and internal names can differ: `<TabletGrid onCellClick={handleCellClick} />` — `handleCellClick` is the implementation in App, `onCellClick` is the prop name TabletGrid expects. Convention: `on` prefix for callback props.
+- If TabletGrid were used in multiple places, each caller would pass a different function but would always use the name `onCellClick` because that's what TabletGrid's signature declares
 - Vite's hot reload is unreliable — sometimes needs a manual browser refresh or full server restart
 - `import './App.css'` must be in App.tsx or the styles won't load (learned by forgetting it)
 
