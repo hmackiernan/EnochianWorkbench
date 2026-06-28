@@ -15,10 +15,13 @@ A reference/annotation tool for the Enochian magical system of John Dee and Edwa
 ## Current Code State
 
 ### `src/App.tsx`
-- Owns all state: `selected` (Set<string>) and `handleCellClick` live here
+- Owns all state: `selected` (Set<string>), `handleCellClick`, `commitSelectionAsName`, `clearSelection` live here
 - Generates a 12×13 mock letter grid (A–Z cycling via charCode arithmetic)
 - Passes `letters`, `selected`, and `handleCellClick` (as `onCellClick`) down to `<TabletGrid />`
-- State was deliberately lifted here from TabletGrid so App can eventually use the selection (e.g. display selected letters)
+- Passes `selected`, `commitSelectionAsName` (as `onCommitSelectionAsName`), `clearSelection` (as `onClearSelection`) down to `<ControlPanel />`
+- `clearSelection` — calls `setSelected(new Set())` to reset working selection
+- `commitSelectionAsName` — stub for now; will save label+selection to `savedNames` state (next step)
+- Next: add `savedNames` state (`Map<string, Set<string>>`) and implement `commitSelectionAsName`
 
 ### `src/TabletGrid.tsx`
 - Accepts `{ letters, selected, onCellClick }` as props — it owns NO state of its own
@@ -33,6 +36,15 @@ A reference/annotation tool for the Enochian magical system of John Dee and Edwa
 - `.tablet-row` — `display: flex` (makes cells go horizontal)
 - `.tablet-cell` — `width: 2rem; height: 2rem; border: 1px solid white`
 - `.tablet-cell-selected` — `background-color: yellow`
+
+### `src/ControlPanel.tsx` (new)
+- Sibling to TabletGrid, both children of App
+- Props: `selected: Set<string>`, `onCommitSelectionAsName: (label: string) => void`, `onClearSelection: () => void`
+- Owns one piece of local state: `selectionName` (string) — the text field value
+- Renders: text input (controlled), "Save Selection w/ Name" button, "Clear Selection" button
+- Commit button: `onClick={() => onCommitSelectionAsName(selectionName)}` — passes local state up via callback
+- Clear button: `onClick={onClearSelection}` — passed directly, no wrapper needed (signature already matches)
+- `selected` is passed in but not currently used — future use when commit needs to snapshot it
 
 ### Key things learned getting here
 - JSX uses camelCase event handlers (`onClick` not `onclick`)
@@ -51,9 +63,10 @@ A reference/annotation tool for the Enochian magical system of John Dee and Edwa
 - `import './App.css'` must be in App.tsx or the styles won't load (learned by forgetting it)
 
 ## What's NOT done yet (near-term)
+- Implement `commitSelectionAsName` in App — needs `savedNames: Map<string, Set<string>>` state and display of saved names
 - Proper Enochian letter data (real tablet contents, not mock A–Z)
 - Variant switching UI
-- Name/selection recording with notes
+- Notes attached to saved names
 - Any backend (Express + SQLite planned)
 - Testing (Jest + Playwright — expected to be H's strongest area once tooling syntax is learned)
 - Auth (Auth0, later)
