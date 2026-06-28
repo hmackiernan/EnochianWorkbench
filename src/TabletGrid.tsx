@@ -1,25 +1,12 @@
 /* This is the component for the table */
 
-import { useState } from 'react' 
+/*import { useState } from 'react' */
 
 
-function TabletGrid({letters}: { letters: string[][]}) {
+function TabletGrid({ letters, selected, onCellClick }: { letters: string[][], selected: Set<string>, onCellClick: (r: number, c: number) => void }) {
   
-    const [selected, setSelected] = useState<Set<string>>(new Set())
+   /* const [selected, setSelected] = useState<Set<string>>(new Set())*/
 
-    const handleCellClick = (r: number, c: number) => {
-  const key = `${r}-${c}`
-  setSelected(prev => {
-    const next = new Set(prev)
-    if (next.has(key)) {
-      next.delete(key)
-    } else {
-      next.add(key)
-    }
-    console.log(key)
-    return next
-  })
-}
 
   
   return (
@@ -28,7 +15,7 @@ function TabletGrid({letters}: { letters: string[][]}) {
         <div key={r} className="tablet-row">
 
           {row.map((letter, c) => (
-<div key={`${r}-${c}`} onClick={() => handleCellClick(r, c)} className={selected.has(`${r}-${c}`) ? "tablet-cell tablet-cell-selected" : "tablet-cell"}>
+<div key={`${r}-${c}`} onClick={() => onCellClick(r, c)} className={selected.has(`${r}-${c}`) ? "tablet-cell tablet-cell-selected" : "tablet-cell"}>
  {letter}
             </div>
           ))}

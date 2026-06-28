@@ -15,17 +15,18 @@ A reference/annotation tool for the Enochian magical system of John Dee and Edwa
 ## Current Code State
 
 ### `src/App.tsx`
+- Owns all state: `selected` (Set<string>) and `handleCellClick` live here
 - Generates a 12×13 mock letter grid (A–Z cycling via charCode arithmetic)
-- Passes it to `<TabletGrid />` as the `letters` prop
-- Previous toy examples (counter, text input) are gone — stripped as we moved on
+- Passes `letters`, `selected`, and `handleCellClick` (as `onCellClick`) down to `<TabletGrid />`
+- State was deliberately lifted here from TabletGrid so App can eventually use the selection (e.g. display selected letters)
 
 ### `src/TabletGrid.tsx`
-- Accepts `{ letters: string[][] }` as props
+- Accepts `{ letters, selected, onCellClick }` as props — it owns NO state of its own
+- Props: `letters: string[][]`, `selected: Set<string>`, `onCellClick: (r: number, c: number) => void`
 - Renders rows as flexbox `<div>` rows, cells as individual `<div>`s
-- Tracks selected cells in `useState<Set<string>>` — keys are `"row-col"` strings (e.g. `"0-3"`)
-- Click handler toggles membership in the Set using the functional updater pattern (`setSelected(prev => ...)`) — important because Set mutations need a new reference to trigger a re-render
 - Selected cells get class `tablet-cell tablet-cell-selected`; unselected just `tablet-cell`
 - className is a conditional expression: `selected.has(`${r}-${c}`) ? "tablet-cell tablet-cell-selected" : "tablet-cell"`
+- onClick calls `onCellClick(r, c)` — the handler lives in App, not here
 
 ### `src/App.css`
 - Styles live here (imported in App.tsx)
@@ -40,6 +41,9 @@ A reference/annotation tool for the Enochian magical system of John Dee and Edwa
 - `Array.from({ length: N }, (_, i) => ...)` pattern for generating arrays
 - CSS is global regardless of which TSX file imports it — no true component scoping without CSS Modules
 - Inline styles in JSX (`style={{ ... }}`) can be conditional; CSS classes can't read state, so conditionality is handled by toggling class names instead
+- Lifting state: move useState up to a common ancestor so siblings can share it; pass value and handler back down as props
+- Props are one destructured object, not multiple arguments: `function Foo({ a, b, c }: { a: string, b: number, c: () => void })`
+- State flows down via props; events flow back up via callback props (e.g. `onCellClick`)
 - Vite's hot reload is unreliable — sometimes needs a manual browser refresh or full server restart
 - `import './App.css'` must be in App.tsx or the styles won't load (learned by forgetting it)
 
