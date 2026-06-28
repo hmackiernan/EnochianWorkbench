@@ -48,3 +48,5 @@ A reference/annotation tool for the Enochian magical system of John Dee and Edwa
 - Prefers direct corrections over diplomatic softening
 - Learns by doing manual steps before abstractions are introduced
 - No Git/Perforce analogies needed (knows git fine)
+- Frequently trips over plain JavaScript fundamentals (not React-specific) — when something looks confusing, check if it's a JS basics issue first
+- Working through The Odin Project out of band, slowly and intermittently, to build JS foundations in parallel
