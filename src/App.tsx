@@ -7,7 +7,7 @@ function App() {
 
 const [selected, setSelected] = useState<Set<string>>(new Set())
 
-  const commitSelectionAsName = (label: string) => {}
+  const commitSelectionAsName = (label: string) => {console.log(label);  console.log(selected)}
   const clearSelection = () => setSelected(new Set())
 
   const handleCellClick = (r: number, c: number) => {
